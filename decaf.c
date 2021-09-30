@@ -57,9 +57,13 @@ main(void)
         exit(1);
     }
 
-    if (fgetc(stdin) != EOF) {
+    char c;
+    if ((c = fgetc(stdin)) != EOF) {
+        putchar(c);
         char buf[1024];
-        while (fgets(buf, 1024, stdin) != NULL) ;
+        while (fgets(buf, 1024, stdin) != NULL) {
+            printf("%s", buf);
+        }
         done();
     } else {
         pause();
