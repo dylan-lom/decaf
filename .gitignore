@@ -6,3 +6,5 @@ build/
 a.out
 decaf
 
+*.orig
+*.rej

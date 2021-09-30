@@ -48,22 +48,23 @@ main(void)
         exit(1);
     }
 
-    if (sigaction(SIGHUP,  &act, NULL) == -1
-        || sigaction(SIGINT,  &act, NULL) == -1
-        || sigaction(SIGPIPE, &act, NULL) == -1
-        || sigaction(SIGQUIT, &act, NULL) == -1
-        || sigaction(SIGTERM, &act, NULL) == -1) {
+    if (sigaction(SIGHUP, &act, NULL) == -1
+            || sigaction(SIGINT, &act, NULL) == -1
+            || sigaction(SIGPIPE, &act, NULL) == -1
+            || sigaction(SIGQUIT, &act, NULL) == -1
+            || sigaction(SIGTERM, &act, NULL) == -1) {
         perror("sigaction");
         exit(1);
     }
 
-    char c;
-    if ((c = fgetc(stdin)) != EOF) {
+    char c = fgetc(stdin);
+    if (c != EOF) {
         putchar(c);
         char buf[1024];
-        while (fgets(buf, 1024, stdin) != NULL) {
+        while (fgets(buf, 1024, stdin)) {
             printf("%s", buf);
         }
+
         done();
     } else {
         pause();
