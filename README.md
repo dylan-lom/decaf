@@ -21,7 +21,7 @@ Usage
 
 ```
 # Compile
-cc -Wall -Wextra -pedantic -o decaf decaf.c -lX11
+cc -Wall -Wextra -pedantic -o decaf decaf.c -lX11 -lXext
 
 # Disable screensaver until killed (ie. Ctrl+C)
 ./decaf
