@@ -1,7 +1,7 @@
 /*
  * decaf.c -- keep your screen on
  * author: Dylan Lom <djl@dylanlom.com>
- * compile: cc -Wall -Wextra -pedantic -o decaf decaf.c -lX11
+ * compile: cc -Wall -Wextra -pedantic -o decaf decaf.c -lX11 -lXext
  *
  * Description: Disables the X11 screensaver until a relevant signal is
  * recieved, or input pipe (if any) is closed.
@@ -13,16 +13,24 @@
 #include <unistd.h>
 
 #include <X11/Xlib.h>
+#include <X11/extensions/dpms.h>
 
 Display *display;
+CARD16 standby, suspend, off;
 int timeout, interval, prefer_blanking, allow_exposures;
 
 void
 done()
 {
-    // Restore previous screensaver settings
+    if (DPMSCapable(display)) {
+        DPMSSetTimeouts(display, standby, suspend, off);
+    }
+
     XSetScreenSaver(display, timeout, interval, prefer_blanking,
                     allow_exposures);
+
+    XFlush(display);
+    XCloseDisplay(display);
     exit(0);
 }
 
@@ -35,10 +43,16 @@ main(void)
         exit(1);
     }
 
+    if (DPMSCapable(display)) {
+        DPMSGetTimeouts(display, &standby, &suspend, &off);
+        DPMSSetTimeouts(display, 0, 0, 0);
+    }
+
     XGetScreenSaver(display, &timeout, &interval, &prefer_blanking,
                     &allow_exposures);
-
     XSetScreenSaver(display, 0, interval, prefer_blanking, allow_exposures);
+
+    XFlush(display);
 
     struct sigaction act;
     act.sa_handler = done;

@@ -1,7 +1,7 @@
 decaf
 =====
 
-Not [caffeine][1].
+Not [caffeine][1]... but it does pretty much the same thing.
 
 Why
 ---
@@ -9,11 +9,12 @@ Why
 I wanted something that did the bare-minimum to stop my screen turning off.
 
 Caffeine depends on GTK and Python, which is gross. It also spits a couple of
-deprecation warnings at me when I run it.
+deprecation warnings at me when I run it. It also doesn't work unless I
+manage (turn off/on) dpms myself beforehand.
 
-Decaf simply disables the X screen saver while it's running. It stops running
-once it gets killed, or once data being piped to it is done (if there ever was
-any).
+Decaf disables the X screen saver and dpms (if possible) while it's running.
+It stops running once it gets killed, or once data being piped to it is done
+(if there ever was any).
 
 Usage
 -----
